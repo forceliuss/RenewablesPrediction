@@ -9,7 +9,7 @@ warnings.filterwarnings('ignore')
 
 #Cleaning renewable dataset
 def renewable_by_country():
-    df = pd.read_csv('./input/renewable_dataset.csv', sep=';')
+    df = pd.read_csv('../Data/Raw/renewable_dataset.csv', sep=';')
     df = df[~df['Region'].isna()]
     
     df['Technology'].replace(['Onshore wind energy','Offshore wind energy'], ['Onshore wind','Offshore wind'], inplace=True)
@@ -25,7 +25,7 @@ def renewable_by_country():
     return df
 
 def renewable_by_region():
-    df = pd.read_csv('./input/renewable_dataset.csv', sep=';')
+    df = pd.read_csv('../Data/Raw/renewable_dataset.csv', sep=';')
     df = df[df['Region'].isna()]
     
     df['Technology'].replace(['Onshore wind energy','Offshore wind energy'], ['Onshore wind','Offshore wind'], inplace=True)
@@ -42,7 +42,7 @@ def renewable_by_region():
 
 #Creating a dataframe with the countryies and regions
 def country_region():
-    df = pd.read_csv('./input/renewable_dataset.csv', sep=';')
+    df = pd.read_csv('../Data/Raw/renewable_dataset.csv', sep=';')
     df = df[~df['Region'].isna()]
     df = df[['Country','Region']]\
         .drop_duplicates()
@@ -53,7 +53,7 @@ def population_by_country():
     df = country_region()
     
     #Importing and renaming
-    pop = pd.read_csv('./input/popultion_dataset.csv', sep=',') #Values in millions
+    pop = pd.read_csv('../Data/Raw/popultion_dataset.csv', sep=',') #Values in millions
     pop = pop.rename(columns={
         'Economy_Label':'Country',
         '2000_Absolute_value_in_millions_Value':'2000',
@@ -94,7 +94,7 @@ def population_by_country():
 def demand_by_country():
     df = country_region()
     
-    dem = pd.read_csv('./input/electricity_demand_dataset.csv', sep=',')
+    dem = pd.read_csv('../Data/Raw/electricity_demand_dataset.csv', sep=',')
     dem = dem[~dem['Code'].isna()]
     dem['Year'] = dem['Year'].astype(str)
     
@@ -112,7 +112,7 @@ def demand_by_country():
 def lcoe_by_country():
     df = country_region()
     
-    lcoe = pd.read_csv('./input/LCOE_dataset.csv', sep=',')
+    lcoe = pd.read_csv('../Data/Raw/LCOE_dataset.csv', sep=',')
     lcoe = lcoe.rename(columns={
         'Entity':'Country',
         'Bioenergy levelized cost of energy':'Bioenergy LCOE',
@@ -133,7 +133,7 @@ def lcoe_by_country():
     return lcoe
 
 def investment_by_country():
-    invst = pd.read_csv('./input/investment_dataset.csv', sep=',')
+    invst = pd.read_csv('../Data/Raw/investment_dataset.csv', sep=',')
     invst = invst.rename(columns={
         'Country/area':'Country',
         'Public Investments (2020 million USD)':'Investment_M_USD'
