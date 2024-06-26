@@ -63,9 +63,66 @@ def main():
     sec_1 = st.container()
     sec_1.header(f'Annual Report - {yr_select}', divider='gray')
 
+    #KPIs Calculations
+    production_2000 = float(df['2000'].sum())
+    production_2021 = float(df['2021'].sum())
+    demand_2000 = float(dem['2000'])
+    demand_2021 = float(dem['2021'])
+
+    if production_2000 == 0:
+        growth_production = 0
+        growth_demand = 0
+    else:
+        growth_production = (production_2021-production_2000)/(production_2000)
+        growth_demand = (demand_2021-demand_2000)/(demand_2000)
+
+
+    population_total = pop_select[yr_select].sum()
+    total_production = df_select[yr_select].sum()
+    production_percap = total_production/population_total
+    production_rate = growth_production/(2021-2000)
+
+    total_demand = dem_select[yr_select].sum()
+    hab_demand = (total_production)/(population_total)
+    growth_rate = growth_demand/(2021-2000)
+
+    fin_percap = (fin_select['Investment_M_USD'].sum())/population_total
+
+    df_select['Percentage'] = round((df[yr_select]/total_production),2)
+
+    if yr_select != '2000':
+        yr = int(yr_select)
+        prev_yr = str(yr-1)
+        prev_production = df[prev_yr].sum()
+        delta_production = ((total_production-prev_production)/total_production)
+        prev_demand = dem[prev_yr].sum()
+        delta_demand = ((total_demand-prev_demand)/total_demand)
+    else:
+        delta_production = 0
+        delta_demand = 0
 
     #Section layout section 1
     col1_s1, col2_s1, col3_s1 = sec_1.columns(3, gap='large')
+
+    #Printing the metrics
+    col1_s1.metric(
+        label="Renewable Production:",
+        value=f'{round(total_production/1000,2)} TWh',
+        delta=f'{round(delta_production*100,2)} %'
+    )
+
+
+    col2_s1.metric(
+        label="Energy Demand:",
+        value=f'{round(total_demand,1)} TWh',
+        delta=f'{round(delta_demand*100,2)} %'
+    )
+
+    col3_s1.metric(
+        label="Population:",
+        value=f'{round(population_total,1)} Millions'
+    )
+
 
     st.divider()
 
@@ -93,3 +150,4 @@ def main():
     
 if __name__ == '__main__':
     main()
+
