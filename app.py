@@ -101,6 +101,24 @@ def main():
         delta_production = 0
         delta_demand = 0
 
+        #KPIs classification
+
+    if production_percap >= 1500:
+        tag = 'Very High'
+        tag_color = 'normal'
+    elif production_percap >= 500:
+        tag = 'High'
+        tag_color = 'normal'
+    elif production_percap >= 250:
+        tag = 'Medium'
+        tag_color = 'off'
+    elif production_percap >= 100:
+        tag = 'Low'
+        tag_color = 'inverse'
+    else:
+        tag = 'Very Low'
+        tag_color = 'inverse'
+
     #Section layout section 1
     col1_s1, col2_s1, col3_s1 = sec_1.columns(3, gap='large')
 
@@ -133,6 +151,31 @@ def main():
     #Subsection layout subsection 1
     col1_sub1, col2_sub1 = sub_1.columns([1,2], gap='large')
 
+    col1_sub1.metric(
+        label="Annual renewable (GWh / hab)",
+        value=f'{round(production_percap,2)}',
+        delta=tag,
+        delta_color=tag_color
+    )
+
+    col1_sub1.metric(
+        label="Annual investment (millions USD / hab)",
+        value=f'$ {round(fin_percap,2)}'
+    )
+
+    col1_sub1.divider()
+    col1_sub1.caption('(2000 - 2021)')
+
+    col1_sub1.metric(
+        label="Average energy demand growth",
+        value=f'{round(growth_rate*100,2)} %'
+    )
+
+
+    col1_sub1.metric(
+        label="Average renewable production growth",
+        value=f'{round(production_rate*100,2)} %'
+    )
 
     #Section 2
     sec_2 = st.container()
