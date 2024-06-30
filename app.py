@@ -243,6 +243,24 @@ def main():
         .transpose()
     fig['Year'] = fig.index
 
+    #Ploting the total Energy Production
+    plot_fig = px.area(
+        fig,
+        x='Year',
+        y=['Hydropower','Onshore wind','Offshore wind','Solar','Solar photovoltaic'],
+        title=f'Total Energy Production (2000 - 2021) ',
+        color_discrete_sequence=px.colors.qualitative.G10,
+        labels={
+            'Year':'Year',
+            'value' :'Energy Production (GWh)' ,
+            'variable':'Technology'
+        }
+    )
+    col2_s2.plotly_chart(
+        plot_fig,
+        use_container_width=True
+    )
+
     #Section 4
     sec_4 = st.container()
 
