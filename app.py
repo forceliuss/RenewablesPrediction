@@ -177,12 +177,47 @@ def main():
         value=f'{round(production_rate*100,2)} %'
     )
 
+    #Ploting the percentage of each source
+    perc_fig = px.pie(
+        df_select, 
+        values='Percentage', 
+        names='Technology',
+        title='Production by source (%)',
+        color_discrete_sequence=px.colors.qualitative.G10
+    )
+    perc_fig.update_traces(sort=False) 
+    col2_sub1.plotly_chart(
+        perc_fig,
+        use_container_width=True
+    )
+
     #Section 2
     sec_2 = st.container()
     sec_2.header('Overview', divider='gray')
 
     #Section layout section 2
     col1_s2, col2_s2 = sec_2.columns(2, gap='small')
+
+    #Comparing the renewable production and the demand
+    prod = df.drop(['Region','Technology'], axis=1)
+    prod = prod.groupby('Country').sum()\
+        .transpose()\
+        .reset_index()\
+        .rename(columns={
+            'index':'Year',
+            cntry_select : 'Production'
+        })
+
+    dex = dem.drop('Region', axis=1)
+    dex = dex.groupby('Country').sum()*1000
+    dex = dex.transpose()\
+        .reset_index()\
+        .rename(columns={
+            'index':'Year',
+            cntry_select : 'Demand'
+        })
+
+    prod_dex = pd.merge(prod, dex, left_on='Year', right_on='Year', how='left')
 
     #Section 4
     sec_4 = st.container()
