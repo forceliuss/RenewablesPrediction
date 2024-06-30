@@ -219,6 +219,30 @@ def main():
 
     prod_dex = pd.merge(prod, dex, left_on='Year', right_on='Year', how='left')
 
+    #Ploting the production x demand
+    dem_fig = px.line(
+        prod_dex,
+        x='Year',
+        y=['Production','Demand'],
+        title=f'Production x Demand (GWh) (2000 - 2021) ',
+        color_discrete_sequence=px.colors.qualitative.G10,
+        labels={
+            'Year':'Year',
+            'value' :'Energy (GWh)',
+            'variable':''
+        }
+    )
+    col1_s2.plotly_chart(
+        dem_fig,
+        use_container_width=True
+    )
+
+
+    fig = df.drop(columns={'Country','Region'})\
+        .set_index('Technology')\
+        .transpose()
+    fig['Year'] = fig.index
+
     #Section 4
     sec_4 = st.container()
 
