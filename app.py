@@ -267,6 +267,45 @@ def main():
     #Section layout
     col1_s4, col2_s4 = sec_4.columns(2,gap='large')
 
+    fin_plt = fin.pivot_table(values='Investment_M_USD', index='Year', columns=['Technology'], aggfunc='first')\
+        .reset_index()
+
+    #Ploting the total Investment by Technology
+    fin_fig = px.bar(
+        fin_plt,
+        x='Year',
+        y=['Hydropower','Onshore wind','Offshore wind','Solar','Solar photovoltaic'],
+        title=f'Investment by Technology (2000 - 2021) ',
+        color_discrete_sequence=px.colors.qualitative.G10,
+        labels={
+            'Year':'Year',
+            'value' :'Millions in investment (USD)',
+            'variable':'Technology'
+        }
+    )
+    col1_s4.plotly_chart(
+        fin_fig,
+        use_container_width=True
+    )
+
+    #Ploting the total Levelized cost of energy
+    lcoe_fig = px.line(
+        lcoe,
+        x='Year',
+        y=['Hydropower LCOE','Onshore wind LCOE','Offshore wind LCOE','Solar LCOE','Solar photovoltaic LCOE'],
+        title=f'Levelized cost of energy (1990 - 2021) ',
+        color_discrete_sequence=px.colors.qualitative.G10,
+        labels={
+            'Year':'Year',
+            'value' :'LCOE ($/GWh)',
+            'variable':'Technology'
+        }
+    )
+    col2_s4.plotly_chart(
+        lcoe_fig,
+        use_container_width=True
+    )
+
     
 if __name__ == '__main__':
     main()
