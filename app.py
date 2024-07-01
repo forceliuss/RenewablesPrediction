@@ -7,7 +7,7 @@ import plotly.express as px
 import warnings
 warnings.filterwarnings('ignore')
 
-from src.cleaning import *
+from Scripts.cleaning import *
 
 #Page Setup
 st.set_page_config(
@@ -28,6 +28,13 @@ hide_st_style="""
 st.markdown(hide_st_style, unsafe_allow_html=True)
 
 def main():
+    #Main dataframe
+    df = renewable_by_country()
+    pop = population_by_country()
+    dem = demand_by_country()
+    lcoe = lcoe_by_country()
+    fin = investment_by_country()
+
     #Sidebar
     st.sidebar.title('Menu')
 
